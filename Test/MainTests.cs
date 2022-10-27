@@ -49,7 +49,8 @@ namespace FinalProject.Test
             cheapFlightsPage.NavigateToPage();
             homepagePage.ClickOnNotificationButtonCancel();
             cheapFlightsPage.WriteToInputTravelTo("Kaunas");
-            //cheapFlightsPage.ClickOnCheapTravelSearchButton();
+            cheapFlightsPage.DoubleClickOnCheapTravelSearchButton();
+            cheapFlightsPage.VerifyNotFoundMessage("Atsiprašome");
 
         }
     }

@@ -1,4 +1,6 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
@@ -14,7 +16,8 @@ namespace FinalProject.Page
     {
         private const string pageUrl = "https://www.zigzag.lt/pigus-skrydziai/";
         private IWebElement inputTravelTo => Driver.FindElement(By.Id("data_to"));
-        private IWebElement buttonCheapTravelSearch => Driver.FindElement(By.ClassName("btn.btn-success.btn-block.btn-search"));
+        private IWebElement buttonCheapTravelSearch => Driver.FindElement(By.CssSelector("#container > div.container-fluid > div.row.mb-4 > div.col-md-12.col-lg-8 > div > form > div > div:nth-child(6) > button"));
+        private IWebElement messageTicketsNotFound => Driver.FindElement(By.CssSelector("#flights-container > div > div:nth-child(2)"));
 
         public CheapFlightsPage(IWebDriver webDriver) : base(webDriver) { }
 
@@ -28,18 +31,26 @@ namespace FinalProject.Page
 
         public void WriteToInputTravelTo(string text)
         {
-            WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(5));
-            wait.Until(ExpectedConditions.ElementIsVisible(By.Id("data_to")));
-        //IJavaScriptExecutor js = (IJavaScriptExecutor) Driver;
-        //js.ExecuteScript("document.getElementById('data_to').value='Kaunas'");
-        //inputTravelTo.Click();
+            Driver.SwitchTo().Frame(1);
             inputTravelTo.Clear();
             inputTravelTo.SendKeys(text);
         }
 
-        public void ClickOnCheapTravelSearchButton()
+        public void DoubleClickOnCheapTravelSearchButton()
         {
-            buttonCheapTravelSearch.Click();
+            Actions action = new Actions(Driver);
+            action.DoubleClick(buttonCheapTravelSearch);
+            action.Build().Perform();
+        }
+
+        public void VerifyNotFoundMessage(string text)
+        {
+            WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(3));
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.
+                ElementExists(By.CssSelector("#flights-container > div > div:nth-child(2)")));
+
+            
+            Assert.IsTrue(messageTicketsNotFound.Text.Contains(text), "message is wrong");
         }
     }
 }

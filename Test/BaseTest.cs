@@ -41,7 +41,7 @@ namespace FinalProject.Test
         [OneTimeTearDown]
         public static void OneTimeTearDown()
         {
-            //driver.Quit();
+            driver.Quit();
         }
     }
 }
