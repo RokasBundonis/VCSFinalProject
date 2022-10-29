@@ -45,7 +45,8 @@ namespace FinalProject.Page
 
         public void VerifyNotFoundMessage(string text)
         {
-
+            Driver.SwitchTo().DefaultContent();
+            Driver.SwitchTo().Frame("waavoiframe0");
             WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(3));
             wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.
                 ElementExists(By.CssSelector("#flights-container > div > div:nth-child(2)")));
