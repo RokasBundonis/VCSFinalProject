@@ -17,6 +17,9 @@ namespace FinalProject.Page
         private IWebElement inputYourEmail => Driver.FindElement(By.Name("your-email"));
         private IWebElement inputYourQuestion => Driver.FindElement(By.Name("your-message"));
         private IWebElement buttonNotificationCancel => Driver.FindElement(By.Id("onesignal-slidedown-cancel-button"));
+        private IWebElement buttonAcceptCookies => Driver.FindElement(By.CssSelector("body > div.cc_banner-wrapper > div > a"));
+        private IWebElement buttonFlights => Driver.FindElement(By.CssSelector("#mf-nav > li:nth-child(3)"));
+        private IWebElement buttonSearchForFlights => Driver.FindElement(By.Id("fl-submit"));
         private IWebElement buttonContacts => Driver.FindElement(By.CssSelector("#menu-main > li:nth-child(9) > a > span"));
         private IWebElement buttonSendMessage => Driver.FindElement(By.XPath("//*[@id=\"wpcf7-f15025-o1\"]/form/p[1]/input"));
         private IWebElement errorMessage => Driver.FindElement(By.ClassName("wpcf7-not-valid-tip"));
@@ -33,6 +36,17 @@ namespace FinalProject.Page
             }
         }
 
+        public void ClickOnAcceptCookiesButton()
+        {
+            WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(3));
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.
+                ElementExists(By.CssSelector("body > div.cc_banner-wrapper > div > a")));
+
+            if (buttonAcceptCookies != null)
+            {
+                buttonAcceptCookies.Click();
+            }
+        }
         public void ClickOnNotificationButtonCancel()
         {
             WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(3));
@@ -52,6 +66,15 @@ namespace FinalProject.Page
         public void ClickOnContactButton()
         {
             buttonContacts.Click();
+        }
+        public void ClickOnFlightsButton()
+        {
+            buttonFlights.Click();
+        }
+
+        public void ClickOnSearchForFlightsButton()
+        {
+            buttonSearchForFlights.Click();
         }
 
         public void WriteToInputYourName(string yourName)
@@ -75,7 +98,20 @@ namespace FinalProject.Page
             inputYourQuestion.Clear();
             inputYourQuestion.SendKeys(yourQuestion);
         }
+        public void AlertTextVerify(string alertText)
+        {
+            IAlert alert = Driver.SwitchTo().Alert();
+            
+            Assert.AreEqual(alert.Text, alertText);
+            
+        }         
+        public void AlertMessageAcceptance()
+        {
+            IAlert alert = Driver.SwitchTo().Alert();
 
+            alert.Accept();
+            
+        }
         public void EmailMessageErrorVerify(string expectedErorrMessage)
         {
             Assert.AreEqual(expectedErorrMessage, errorMessage.Text, "Error message is wrong");

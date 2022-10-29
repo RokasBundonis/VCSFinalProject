@@ -45,11 +45,11 @@ namespace FinalProject.Page
 
         public void VerifyNotFoundMessage(string text)
         {
+
             WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(3));
             wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.
                 ElementExists(By.CssSelector("#flights-container > div > div:nth-child(2)")));
 
-            
             Assert.IsTrue(messageTicketsNotFound.Text.Contains(text), "message is wrong");
         }
     }
